@@ -74,6 +74,10 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
+app.get("/", (req, res) => {
+  res.send("Live Polling Server is running");
+})
+
 app.use("/api/polls", require("./routes/polls"));
 app.use("/api/auth", require("./routes/auth"));
 
