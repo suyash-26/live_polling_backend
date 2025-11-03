@@ -58,7 +58,7 @@ const app = express();
 // CORS Configuration
 app.use(
   cors({
-    origin: "http://localhost:5173", // Change this to your frontend URL in production
+    origin: process.env.FRONTEND_URL ||  "http://localhost:5173", // Change this to your frontend URL in production
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -98,7 +98,7 @@ const server = app.listen(PORT, "0.0.0.0", () => {
 // Attach Socket.IO to the server returned by app.listen()
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL ||  "http://localhost:5173",
     methods: ["GET", "POST"],
     credentials: true,
   },
