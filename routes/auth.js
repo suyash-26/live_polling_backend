@@ -30,7 +30,7 @@ router.get("/protected", (req, res, next) => {
   }
 });
 
-router.post("/login", async (req, res,next) => {
+router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -49,7 +49,12 @@ router.post("/login", async (req, res,next) => {
     const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true, // Required for HTTPS
+      sameSite: "none", // REQUIRED for cross-site (Vercel ≠ Render)
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.json({ msg: "User registered successfully" });
   } catch (err) {
     console.error(err);
