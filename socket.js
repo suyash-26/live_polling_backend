@@ -6,12 +6,20 @@ module.exports = (io) => {
       socket.join(pollId);
     });
 
-    socket.on('push-question', ({pollId, questionId }) => {
+    socket.on('push-question', async ({pollId, questionId }) => {
       // Logic to push question
-      const poll = Poll.findById(pollId);
+      const poll = await Poll.findById(pollId);
       if (!poll) return;
-      console.log("Pushing question", questionId, "to poll", pollId);
-      io.to(pollId).emit('question-pushed', { questionId });
+      poll.questions?.forEach((q) => {
+        if (q.id === questionId) {
+          q.isActive = true;
+          q.lastActivatedAt = Date.now();
+        }else{
+          q.isActive = false;
+        }
+      });
+      await poll.save();
+      io.to(pollId).emit('question-pushed', { questionId, questions: poll.questions });
     });
   });
 };

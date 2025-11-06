@@ -170,7 +170,9 @@ const questionSchema = new mongoose.Schema(
     options: [optionSchema],
     type: { type: String, enum: ["bar", "pie", "doughnut"], default: "bar" },
     activeTime: { type: Number, default: 30, min: 1, max: 1440 },
+    lastActivatedAt: { type: Date, default: 0 },
     createdAt: { type: Date, default: Date.now, immutable: true },
+    isActive: { type: Boolean, default: false },
   },
   { _id: true },
 ); // Critical: question._id
