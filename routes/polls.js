@@ -21,7 +21,7 @@ router.get('/getUserPolls', auth, async (req, res) => {
 });
 
 // Get public poll (for presenter/participant)
-router.get('/:id',auth , async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const poll = await Poll.findById(req.params.id);
     if (!poll) return res.status(404).json({ msg: 'Poll not found' });
